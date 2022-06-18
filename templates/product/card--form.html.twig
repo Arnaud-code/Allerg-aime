@@ -1,0 +1,57 @@
+<div class="card bg-light my-4 mx-auto" style="max-width: 30rem">
+	<div class="card-header h2">
+		{% if currentProduct.name == null %}Création d'un{% else %}Modification du
+		{% endif %}
+		produit
+	</div>
+	<div class="card-body">
+
+		{{ form_start(form) }}
+		{{ form_row(form._token) }}
+
+		<div class="row">
+			<div class="col-9">
+				{{ form_label(form.name)}}
+				{{ form_widget(form.name, {'attr': {'class': 'form-control', 'value': currentProduct.name, 'placeholder': "Nom du produit"} })}}
+			</div>
+			<div class="col-3">
+				{{ form_label(form.price)}}
+				{{ form_widget(form.price, {'attr': {'class': 'form-control', 'value': (currentProduct.price / 100), 'placeholder': "Prix du produit"} })}}
+			</div>
+		</div>
+
+		<div>
+			{{ form_label(form.description)}}
+			{{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': "Description du produit"}, 'value': currentProduct.description })}}
+		</div>
+
+		<div class="row">
+			<div class="col-6">
+				{% set categoryValue = '' %}
+				{% if currentProduct.category != null %}
+				{% set categoryValue = currentProduct.category.id %}
+				{% endif %}
+				{{ form_label(form.category) }}
+				{{ form_widget(form.category, {'attr': {'class': 'form-select', 'placeholder': "Catégorie du produit"}, 'value': categoryValue }) }}
+			</div>
+			<div class="col-3">	
+				{{ form_label(form.sort)}}
+				{{ form_widget(form.sort, {'attr': {'class': 'form-control', 'value': currentProduct.sort, 'placeholder': "N°"} })}}
+			</div>
+			<div class="col-3">
+				{{ form_label(form.trash)}}
+				{{ form_widget(form.trash, {'attr': {'class': 'form-check', 'checked': currentProduct.trash} })}}
+			</div>
+		</div>
+
+
+		<div class="d-flex justify-content-around mt-4">
+			<button class="submit btn btn-success">Enregistrer</button>
+			{% if currentProduct.name != null %}
+				<a href={{ path('admin_product_delete', {slug: currentProduct.slug} ) }} class="btn btn-primary">Supprimer</a>
+				<a href={{ path('admin_product_index') }} class="btn btn-secondary">Annuler</a>
+			{% endif %}
+		</div>
+
+	</div>
+</div>

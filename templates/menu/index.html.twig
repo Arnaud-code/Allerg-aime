@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu
+{% endblock %}
+
+{% block body %}
+
+	<div class="container my-4">
+
+		<h1 class="text-center">Menu</h1>
+
+		{# Filtres par allergène #}
+		<div class="card bg-light my-4 mx-auto" style="width: 80">
+			<div class="card-header h4">
+				Filtres des allergènes
+			</div>
+			<div class="card-body">
+				{% for allergen in allergens %}
+					{% if allergen.filter == 1 %}
+						{% set class = "btn-danger" %}
+					{% else %}
+						{% set class = "btn-light" %}
+					{% endif %}
+					<a href={{ path('menu_filter', {slug: allergen.slug} ) }} class="btn btn-sm {{ class }}">{{ allergen.name }}</a>
+				{% endfor %}
+			</div>
+		</div>
+
+		{# Produits par catégorie #}
+		{% for category in categories %}
+			{% if category.trash == false %}
+
+			<div class="card bg-light my-4 mx-auto" style="width: 100">
+				<div class="card-header h2">
+					{{ category.name }}
+				</div>
+				<div class="card-body">
+					<div class="accordion" id="accordionExample">
+						{% for product in category.products|sort((a, b) => a.sort <=> b.sort) %}
+							{% if product.trash == false %}
+
+								<div class="accordion-item">
+                                    {% set present = false %}
+                                    {% for presence in product.presences %}
+                                        {% if presence.allergen.filter == true %}
+                                            {% set present = true %}
+                                        {% endif %}
+                                    {% endfor %}
+
+									{% set heading = 'heading' ~ product.id %}
+									{% set collapse = 'collapse' ~ product.id %}
+									{% set target = '#' ~ collapse %}
+
+									<h2 class="accordion-header" id={{ heading }}>
+										<button class="accordion-button collapsed{% if present %} btn-danger{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target={{ target }} aria-expanded="false" aria-controls={{ collapse }}>
+											<div class="row" style="width: 100%;">
+												<div class="col-9">{{ product.name }}</div>
+												<div class="col-2" style="text-align: right;">{{ (product.price / 100)|number_format(2, ',', ' ') }}
+													&euro;</div>
+											</div>
+
+										</button>
+									</h2>
+									<div id={{ collapse }} class="accordion-collapse collapse" aria-labelledby={{ heading }} data-bs-parent="#accordionExample" style="">
+										<div class="accordion-body{% if present %} bg-danger{% endif %}">
+											{{ product.description }}<br>
+											Allergènes :
+											<strong>
+												{% for presence in product.presences %}
+													{{ presence.allergen.name }},
+												{% endfor %}
+											</strong>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+
+				</div>
+			</div>
+			{% endif %}
+
+		{% endfor %}
+
+	</div>
+
+{% endblock %}

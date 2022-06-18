@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des présences d'allergène
+{% endblock %}
+
+{% block body %}
+
+	<div class="container my-4">
+
+		<h1 class="text-center">Gestion des présences d'allergène</h1>
+
+		<div class="card bg-light my-4" style="width: 100%;">
+			<div class="card-body">
+
+
+				<table class="table table-striped table-hover">
+
+					<thead>
+						<tr>
+							<th scope="col">Produit</th>
+							{% for allergen in allergens %}
+								<th scope="col" class="verticalTableHeader"><span>{{ allergen.name }}</span></th>
+							{% endfor %}
+						</tr>
+					</thead>
+					<tbody>
+						{% for category in categories %}
+							<tr class="table-dark">
+								<th scope="row">{{ category.name }}</th>
+								{% for allergen in allergens %}
+									<td></td>
+								{% endfor %}
+							</tr>
+
+							{% for product in category.products %}
+								<tr>
+									<th scope="row">{{ product.name }}
+										<span class="badge bg-primary rounded-pill ml-2">{{ product.presences|length }}</span>
+									</th>
+									{% for allergen in allergens %}
+										<td class="text-center fit">
+
+											{% set ispresent = false %}
+											{% for presence in product.presences %}
+												{% if presence.allergen == allergen %}
+													{# Bouton Ajout/suppression #}
+													<a href={{ path('admin_presence_delete', {id: presence.id} ) }} class="btn btn-primary">-</a>
+													{% set ispresent = true %}
+												{% endif %}
+
+											{% endfor %}
+											{% if ispresent == false %}
+												<a href={{ path('admin_presence_add', {pslug: product.slug, aslug: allergen.slug} ) }} class="btn btn-light">+</a>
+											{% endif %}
+
+										</td>
+									{% endfor %}
+								</tr>
+							{% endfor %}
+
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

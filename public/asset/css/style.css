@@ -1,0 +1,17 @@
+.verticalTableHeader span, .verticalTableHeader {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    -ms-writing-mode: vertical-rl;
+    text-align: left;
+    transform: rotate(195deg);
+    transform-origin: 55% 50%;
+}
+strong {
+    font-weight: bold;
+}
+.fit {
+    padding: 20px 0px !important;
+}
+.btn-sm {
+    padding: 0.5rem 0.5rem;
+}

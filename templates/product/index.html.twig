@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des produits
+{% endblock %}
+
+{% block body %}
+
+	<div class="container my-4">
+
+		<h1 class="text-center">Gestion des produits</h1>
+
+		<!-- Formulaire -->
+	    {% include "product/card--form.html.twig" %}
+
+		<!-- Tableau -->
+		{% include "product/card--list.html.twig" %}
+
+	</div>
+
+{% endblock %}

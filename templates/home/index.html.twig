@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block body %}
+	<div class="container my-4">
+		<h1 class="text-center">Accueil</h1>
+
+		<div class="card bg-light my-4 mx-auto" style="max-width: 50rem">
+			<div class="card-header h2">
+				Bienvenue !
+			</div>
+			<div class="card-body">
+				Allerg'aime est un restaurant respectueux de vos allergies.
+				<br>
+				Consultez le <a href={{ path('menu') }}>menu</a> et commandez votre repas idéal !
+			</div>
+		</div>
+	{% endblock %}
